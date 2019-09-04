@@ -1,6 +1,8 @@
 {
   "name": "ventasMarsol",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular",
   "id": "d4bd91b4"
 }
