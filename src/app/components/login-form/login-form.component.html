@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="start" color="danger" name="close-circle-outline"></ion-icon>
+        Formulario de inicio
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #form="ngForm" (ngSubmit)="login()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Username</ion-label>
+        <ion-input type="text"
+                   name="username"
+                   placeholder="Introduzca su nombre de usuario"
+                   [(ngModel)]="user.username"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password"
+                   name="password"
+                   [(ngModel)]="user.password"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-button color="primary"
+                [disabled]="!user.username || !user.password"
+                type="submit">
+      Iniciar sesión
+    </ion-button>
+  </form>
+</ion-content>
