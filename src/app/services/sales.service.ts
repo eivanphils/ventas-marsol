@@ -5,7 +5,6 @@ import { Product } from '../interfaces/product';
 import { Sale } from '../interfaces/sale';
 import { SaleHistory } from './../interfaces/sale-history';
 import { UserService } from './user.service';
-import { StorageService } from './storage.service';
 import { Storage } from '@ionic/storage';
 
 const url = environment.urlApi;
@@ -14,43 +13,38 @@ const url = environment.urlApi;
   providedIn: 'root'
 })
 export class SalesService {
-  token: string;
 
   constructor(protected http: HttpClient,
               protected storage: Storage,
-              protected storageService: StorageService,
-              protected userService: UserService) {
-    console.log('token contructor', this.storageService.getItem('token'));
+              protected userService: UserService) {}
+
+  getAllProducts(token: string) {
+    return this.executeQuery<Product[]>('/items', token);
   }
 
-  getAllProducts() {
-    return this.executeQuery<Product[]>('/items');
+  getAllSales(token: string) {
+    return this.executeQuery<Sale[]>('/ventas', token);
   }
 
-  getAllSales() {
-    return this.executeQuery<Sale[]>('/ventas');
-  }
-
-  getAllSaleHistory(productId: number = null) {
+  getAllSaleHistory(token: string, productId: number = null) {
     let query;
     if (productId) {
       query = '/history/item/' + productId;
     } else {
       query = '/history/';
     }
-    return this.executeQuery<SaleHistory[]>(query);
+    return this.executeQuery<SaleHistory[]>(query, token);
   }
 
-  getSalesHistoryBySeller(sellerName: string) {
-    return this.executeQuery<SaleHistory[]>(`/history/vendedor/${sellerName}`);
+  getSalesHistoryBySeller(token: string, sellerName: string) {
+    return this.executeQuery<SaleHistory[]>(`/history/vendedor/${sellerName}`, token);
   }
 
-  private executeQuery<T>(query: string) {
-    this.token = this.storageService.getItem('token');
+  private executeQuery<T>(query: string, token: string) {
 
     const headers = new HttpHeaders({
       Accept : 'application/json',
-      Authorization: 'Bearer ' + this.token
+      Authorization: 'Bearer ' + token
     });
 
     query = url + query;

@@ -34,12 +34,12 @@ export class LoginFormComponent implements OnInit {
     this.userService.logIn(this.user.username, this.user.password).subscribe(
       (response) => {
         if (response) {
-          this.userService.saveToken(response.access_token);
+          this.userService.saveUserData(response);
           this.router.navigate(['/home']);
           this.closeModal();
         }
 
-        this.presentToast('success', 'Inicio de sesión exitoso!');
+        this.presentToast('primary', 'Inicio de sesión exitoso!');
         this.loading.dismiss();
       },
       (error) => {

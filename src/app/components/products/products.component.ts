@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SalesService } from '../../services/sales.service';
 import { Product } from '../../interfaces/product';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-products',
@@ -9,21 +10,21 @@ import { Product } from '../../interfaces/product';
 })
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
-  constructor(protected salesService: SalesService) { }
+  constructor(
+    protected salesService: SalesService,
+    protected storage: Storage) { }
 
   ngOnInit() {
     this.getAllProducts();
   }
 
-  ionViewWillEnter(){
-   this.getAllProducts();
-  }
-
   getAllProducts() {
-    this.salesService.getAllProducts().subscribe(
-      (response) => {
-        this.products = response;
-      }
-    );
+    this.storage.get('token').then((token) => {
+      this.salesService.getAllProducts(token).subscribe(
+        (response) => {
+          this.products = response;
+        }
+      );
+    });
   }
 }

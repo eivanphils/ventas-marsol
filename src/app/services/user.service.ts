@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { StorageService } from './storage.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { User } from '../interfaces/user';
+import { Storage } from '@ionic/storage';
 
 const url = environment.urlApi;
 
@@ -11,25 +11,23 @@ const url = environment.urlApi;
 })
 export class UserService {
   constructor(
-    protected storageService: StorageService,
+    protected storage: Storage,
     protected http: HttpClient
   ) { }
 
-
-  saveToken(token) {
-    this.storageService.saveItem('token', token);
-  }
-
-  getToken() {
-    return this.storageService.getItem('token');
+  saveUserData(userData: User) {
+    this.storage.set('user', userData);
+    this.storage.set('token', userData.access_token);
   }
 
   logIn(username: string, password: string) {
-    return this.executeQuery('/login', username, password);
+    return this.executeQuery<User>('/login', username, password);
   }
 
   logOut() {
-    this.storageService.removeItem('token');
+    this.storage.remove('token');
+    this.storage.remove('user');
+
   }
 
   private executeQuery<T>(query: string, username, password) {

@@ -1,9 +1,12 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { SalesService } from '../../services/sales.service';
 import { Product } from '../../interfaces/product';
 import { SaleHistory } from '../../interfaces/sale-history';
+import { User } from '../../interfaces/user';
 import { LoadingController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -15,23 +18,28 @@ export class HomePage implements OnInit {
   salesHistory: SaleHistory[] = [];
   salesHistoryBySeller: SaleHistory[] = [];
   loading: any;
+  user: User;
+  token: string;
 
   constructor(
+    protected router: Router,
     protected userService: UserService,
+    protected storage: Storage,
     protected saleService: SalesService,
     protected loadingCtrl: LoadingController) {}
 
   ngOnInit() {
     this.presentLoading();
-    setTimeout(() => {
+    this.storage.get('token').then((token) => {
+      this.token = token;
       this.getAllProducts();
       this.getLastSales();
       this.getSalesBySeller();
-    }, 2000);
+    });
   }
 
   getAllProducts() {
-    this.saleService.getAllProducts().subscribe(
+    this.saleService.getAllProducts(this.token).subscribe(
       (response) => {
         this.products = response;
         this.loading.dismiss();
@@ -45,8 +53,7 @@ export class HomePage implements OnInit {
   loadSalesByProduct(event) {
     const productId = event.detail.value;
     this.salesByProduct = [];
-
-    this.saleService.getAllSaleHistory(productId).subscribe(
+    this.saleService.getAllSaleHistory(this.token, productId).subscribe(
       (response) => {
         this.salesByProduct = response;
       }
@@ -54,21 +61,28 @@ export class HomePage implements OnInit {
   }
 
   getLastSales() {
-    this.saleService.getAllSaleHistory().subscribe(
+    this.saleService.getAllSaleHistory(this.token).subscribe(
       (response) => {
         this.salesHistory = response;
       }
     );
+
   }
 
   getSalesBySeller() {
-    //TODO: caputrar datos de usuario logueado
-    const username = 'abustos';
-    this.saleService.getSalesHistoryBySeller(username).subscribe(
-      (response) => {
-        this.salesHistoryBySeller = response;
-      }
-    );
+    this.storage.get('user').then((user) => {
+      this.user = user;
+      this.saleService.getSalesHistoryBySeller(this.token, this.user.usuario).subscribe(
+        (response) => {
+          this.salesHistoryBySeller = response;
+        }
+      );
+    });
+  }
+
+  logOut() {
+    this.userService.logOut();
+    this.router.navigate(['/login']);
   }
 
   async presentLoading() {

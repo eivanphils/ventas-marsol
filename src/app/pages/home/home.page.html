@@ -6,6 +6,13 @@
     <ion-title>
       Dashboard
     </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="logOut()">
+        <ion-icon slot="start" name="power" color="danger"></ion-icon>
+        <ion-label>Salir</ion-label>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -34,7 +41,7 @@
       
       <ion-col size-xs="12" size-md="6" *ngIf="salesHistoryBySeller.length > 0">
         <ion-item>
-          <ion-label>Ventas de usernam</ion-label>
+          <ion-label>Ventas de {{user.nombre}} {{user.apellido}}</ion-label>
         </ion-item>
 
         <app-sales-chart [sales]="salesHistoryBySeller" 
