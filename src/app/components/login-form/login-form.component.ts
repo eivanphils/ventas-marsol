@@ -35,7 +35,9 @@ export class LoginFormComponent implements OnInit {
       (response) => {
         if (response) {
           this.userService.saveUserData(response);
-          this.router.navigate(['/home']);
+          setTimeout(() => {
+            this.router.navigate(['/home']);
+          }, 1000);
           this.closeModal();
         }
 
