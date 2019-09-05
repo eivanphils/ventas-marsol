@@ -24,7 +24,12 @@
   <ion-grid fixed>
     <ion-row>
       <ion-col size-xs="12" size-md="6" *ngIf="salesByProduct.length > 0">
-        <app-sales-chart [sales]="salesByProduct"></app-sales-chart>
+        <ion-item>
+          <ion-label>Ventas del producto seleccionado</ion-label>
+        </ion-item>
+        <app-sales-chart [sales]="salesByProduct"
+                          [colorA]="'#3880ff'"
+                          [colorB]="'#10dc60'"></app-sales-chart>
       </ion-col>
       
       <ion-col size-xs="12" size-md="6" *ngIf="salesHistoryBySeller.length > 0">
@@ -32,14 +37,18 @@
           <ion-label>Ventas de usernam</ion-label>
         </ion-item>
 
-        <app-sales-chart [sales]="salesHistoryBySeller"></app-sales-chart>
+        <app-sales-chart [sales]="salesHistoryBySeller" 
+                          [colorA]="'#3fc375'"
+                          [colorB]="'#bb39af'"></app-sales-chart>
       </ion-col>
       
       <ion-col size-xs="12" size-md="6" *ngIf="salesHistory.length > 0">
         <ion-item>
           <ion-label>Ultimas ventas</ion-label>
         </ion-item>
-        <app-sales-chart [sales]="salesHistory"></app-sales-chart>
+        <app-sales-chart [sales]="salesHistory"
+                          [colorA]="'#de3c11'"
+                          [colorB]="'#11a3de'"></app-sales-chart>
       </ion-col>
     </ion-row>
   </ion-grid>

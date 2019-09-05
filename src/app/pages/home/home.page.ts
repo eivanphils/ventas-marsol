@@ -43,11 +43,11 @@ export class HomePage implements OnInit {
   }
 
   loadSalesByProduct(event) {
-    const productId = event.detail.val;
+    const productId = event.detail.value;
+    this.salesByProduct = [];
 
     this.saleService.getAllSaleHistory(productId).subscribe(
       (response) => {
-        console.log('sales by product', response);
         this.salesByProduct = response;
       }
     );
@@ -62,6 +62,7 @@ export class HomePage implements OnInit {
   }
 
   getSalesBySeller() {
+    //TODO: caputrar datos de usuario logueado
     const username = 'abustos';
     this.saleService.getSalesHistoryBySeller(username).subscribe(
       (response) => {

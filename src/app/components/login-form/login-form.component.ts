@@ -61,6 +61,7 @@ export class LoginFormComponent implements OnInit {
     const toast = await this.toastCtrl.create({
       color,
       message,
+      duration: 3000,
       position: 'bottom',
       buttons: [
         {
