@@ -1,4 +1,4 @@
-interface Sale {
+export interface Sale {
   item: string;
   vendedor: string;
   cantidad: number;
