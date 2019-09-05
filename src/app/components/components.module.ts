@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { FormsModule } from '@angular/forms';
+import { ProductsComponent } from './products/products.component';
+import { SalesChartComponent } from './sales-chart/sales-chart.component';
 
 
 
@@ -11,7 +13,9 @@ import { FormsModule } from '@angular/forms';
     LoginFormComponent
   ],
   declarations: [
-    LoginFormComponent
+    LoginFormComponent,
+    ProductsComponent,
+    SalesChartComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +23,9 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   exports: [
-    LoginFormComponent
+    LoginFormComponent,
+    ProductsComponent,
+    SalesChartComponent
   ]
 })
 export class ComponentsModule { }
